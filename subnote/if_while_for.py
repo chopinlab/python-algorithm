@@ -46,6 +46,11 @@ for number in range(len(marks)):
         continue
     print("%d번 학생 축하합니다. 합격입니다." % (number+1))
 
+# 2.2 enumerate 함수, index와 value값을 모두 필요하는 경우
+
+for i, name in enumerate(['body', 'foo', 'bar']):
+    print(i, name)
+
 
 
 
