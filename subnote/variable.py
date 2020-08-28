@@ -12,3 +12,8 @@ print(id(c10))
 a11, b11 = ['python', 'life']
 print(a11)
 print(b11)
+
+
+
+print(1,'a',3)
+print(1,'a',3)

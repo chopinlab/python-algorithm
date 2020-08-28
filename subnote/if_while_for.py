@@ -26,32 +26,3 @@ else:
     message = "failure"
 
 message = "success" if score >= 60 else "failure"
-
-
-# 2.0 for문
-test_list = ['one', 'two', 'three']
-for i in test_list:  # 리스트(또는 튜플, 문자열)
-    print(i)
-
-# 2.1 range함수
-add = 0
-for i in range(11):  # 0부터 10까지.. 11은 포함되지 않음, range(11) = range(0, 11)
-    add = add + i
-
-print(add)
-
-marks = [90, 25, 67, 45, 80]
-for number in range(len(marks)):
-    if marks[number] < 60:
-        continue
-    print("%d번 학생 축하합니다. 합격입니다." % (number+1))
-
-# 2.2 enumerate 함수, index와 value값을 모두 필요하는 경우
-
-for i, name in enumerate(['body', 'foo', 'bar']):
-    print(i, name)
-
-
-
-
-
