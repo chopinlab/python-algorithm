@@ -22,3 +22,7 @@ b = [4, 5, 6]
 8) 개수: a.count(1)  # 1의 개수 세기
 
 """
+
+a = list()
+a.append(1)
+print(a)
