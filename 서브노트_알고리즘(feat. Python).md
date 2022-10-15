@@ -19,16 +19,49 @@
 * 스택(Stack)을 사용
 
 ```python
-def DFS_with_adj_list(graph, root):
-    visited = []
-    stack = [root]
+def dfs(graph, start_node):
+    visited = list()
+    stack = list()
+    stack.append(start_node)
     
     while stack:
-        n = stack.pop()
-        if n not in visited:
-            visited.append(n)
-            stack += graph[n] - set(visited)
+        node = stack.pop()
+        if node not in visited:
+            visited.append(node)
+            stack.extend(graph[node])
+            # stack.extend(reversed(graph[node]))
     return visited
 
-print(DFS_with_adj_list(graph_list, root_node))
+print(dfs(graph_list, root_node))
 ```
+
+## BFS(Breadth First Search, 너비 우선 탐색)
+* python에서는 deque를 사용한다.
+```python
+from collections import deque
+
+def bfs(graph, start_node):
+    visited = list()
+    adjacency_nodes = deque([start_node])
+
+    while adjacency_nodes:
+        node = adjacency_nodes.popleft()
+        if node not in visited:
+            visited.append(node)
+            adjacency_nodes.extend(graph[node])
+    return visited
+
+graph = {
+    'A': ['B', 'F', 'I'],
+    'B': ['A', 'E', 'C'],
+    'C': ['B', 'E', 'D'],
+    'D': ['C', 'G', 'H'],
+    'E': ['B', 'C', 'G'],
+    'F': ['A', 'G'],
+    'G': ['E', 'F', 'D'],
+    'H': ['D'],
+    'I': ['A']
+}
+bfs(graph, 'A')
+```
+
