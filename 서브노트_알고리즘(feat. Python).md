@@ -65,3 +65,16 @@ graph = {
 bfs(graph, 'A')
 ```
 
+## Recursive Function(재귀 함수)
+* 재귀 함수의 종료 조건을 반드시 명시해야 한다.
+```python
+def recursive_function(i):
+    # 종료 조건을 명시
+    if i == 100:
+        return
+    recursive_function(i + 1)
+    print(i, '번째 재귀함수를 종료합니다')
+    
+recursive_function(1)
+```
+
