@@ -65,6 +65,32 @@ graph = {
 bfs(graph, 'A')
 ```
 
+## Binary Search
+
+1. 거꾸로 구한다고 생각하면 됨
+2. left값 설정하고, right값 설정하고, mid = (left + right) // 2로 생각하고, 조건에 따라 왼쪽, 오른쪽을 반복적으로 찾아 나간다.
+
+```python
+def solution(n, times):
+    answer = 0
+    left = min(times)
+    right = max(times)*n
+    while left <= right:
+        mid = (left + right) // 2
+        checked = 0
+        for time in times:
+            checked += mid // time
+            if checked >= n:
+                break
+        if checked >= n:
+            answer = mid
+            right = mid - 1
+        elif checked < n:
+            left = mid + 1
+    return answer
+```
+
+
 ## Recursive Function(재귀 함수)
 * 재귀 함수의 종료 조건을 반드시 명시해야 한다.
 ```python
@@ -113,3 +139,4 @@ for i in range(3, N+1):
 
 print(d[N])
 ```
+
