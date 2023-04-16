@@ -65,6 +65,73 @@ graph = {
 bfs(graph, 'A')
 ```
 
+```python
+from collections import deque
+
+def solution(maps):
+    answer = 0
+    n, m = len(maps), len(maps[0])
+
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+    visited = [[False for _ in range(m)] for _ in range(n) ]
+
+    queue = deque([(0, 0)])
+    visited[0][0] = True
+
+    while queue:
+        x, y = queue.popleft()
+        if x == n-1 and y == m-1:
+            answer = maps[x][y]
+            return answer
+
+        for i in range(4):
+            nx, ny = x + dx[i], y + dy[i]
+
+            if 0 <= nx < len(maps) and 0 <= ny < len(maps[0]):
+                if not visited[nx][ny] and maps[nx][ny] != 0:
+                    queue.append((nx, ny))
+                    visited[nx][ny] = True
+                    maps[nx][ny] = maps[x][y] + 1
+    answer = -1
+    return answer
+```
+
+```python
+from collections import deque
+
+def solution(n, edge):
+    answer = 0
+    # graph = [[0 for _ in range(n)] for _ in range(n)]
+    graph = [[] for _ in range(n)]
+    is_visit = [False for _ in range(n)]
+    is_visit[0] = True
+    distance = [0 for _ in range(n)]
+    queue = deque()
+    queue.append(0)
+    
+    for i, j in edge:
+        graph[i-1].append(j-1)
+        graph[j-1].append(i-1)
+        
+        
+    while queue:
+        now = queue.popleft()
+        
+        for next in graph[now]:
+            if not is_visit[next]:
+                is_visit[next] = True
+                queue.append(next)
+                distance[next] = distance[now] + 1 
+                
+    distance.sort(reverse=True)    
+    return distance.count(distance[0])
+
+```
+
+
+
+
 ## Binary Search
 
 1. 거꾸로 구한다고 생각하면 됨
