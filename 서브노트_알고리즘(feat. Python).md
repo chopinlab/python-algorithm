@@ -10,9 +10,49 @@
 1. 거스름 돈 문제
 * 가지고 있는 동전 종류에서 큰 단위가 작은 단위의 배수 형태이어야 한다.
 * 탐욕적으로 문제에 접근했을 때 정확한 답을 찾을 수 있다는 보장이 있을 경우엔 매우 효과적이다.
+* 하나씩 빼준다는 느낌으로 할 것.
+* 그리고 리스트를 계속 새로 만들어내지 말고, 투포인터 사용할 것
 ```python
-
+def solution(people, limit):
+    people.sort(reverse=True)
+    answer = 1
+    limit_tmp = limit
+    i, j = 0, len(people) - 1
+    while i <= j:
+        if limit_tmp - people[i] >= 0:
+            limit_tmp -= people[i]
+            i += 1
+        else:
+            if limit_tmp - people[j] >= 0:
+                limit_tmp -= people[j]
+                j -= 1
+            else:
+                limit_tmp = limit
+                answer += 1
+    return answer
 ```
+## Two Pointers
+* 투 포인터(Two Pointers)는 배열이나 리스트와 같은 순차 자료구조에서 두 개의 포인터를 조작하여 원하는 결과를 얻는 알고리즘입니다. 일반적으로 배열에서 연속된 부분집합(subarray)을 찾거나 정렬되지 않은 배열에서 두 원소의 합이 특정 값이 되는 쌍(pair)을 찾는 문제에 활용됩니다.
+투 포인터 알고리즘은 보통 시작점과 끝점을 나타내는 두 개의 포인터를 사용합니다. 이 포인터들은 각각 배열의 첫 번째 원소와 마지막 원소를 가리키는 것으로 시작합니다. 그리고 포인터들을 이동시키면서 특정 조건을 만족하는 구간(subarray)이나 쌍(pair)을 찾습니다. 이 때, 포인터들이 서로 역방향으로 이동하게 될 때까지 알고리즘을 반복하게 됩니다.
+예를 들어, 배열에서 합이 특정 값이 되는 두 원소를 찾는 문제를 투 포인터로 해결할 수 있습니다. 시작점과 끝점을 나타내는 포인터를 각각 배열의 첫 번째 원소와 마지막 원소를 가리키도록 설정합니다. 그리고 두 포인터가 가리키는 원소의 합이 특정 값보다 크면 끝점을 왼쪽으로 한 칸 옮겨서 더 작은 값으로 이동시킵니다. 반대로, 합이 특정 값보다 작으면 시작점을 오른쪽으로 한 칸 옮겨서 더 큰 값으로 이동시킵니다. 이 과정을 반복하다가 합이 특정 값이 되는 두 원소를 찾으면 알고리즘을 종료합니다.
+투 포인터 알고리즘은 보통 O(n) 시간 복잡도를 가집니다. 따라서 대부분의 경우 빠르고 효율적인 알고리즘이라고 할 수 있습니다.
+```python
+def find_pair_with_sum(arr, target_sum):
+    arr.sort()
+    left, right = 0, len(arr) - 1
+    
+    while left < right:
+        curr_sum = arr[left] + arr[right]
+        if curr_sum == target_sum:
+            return (arr[left], arr[right])
+        elif curr_sum < target_sum:
+            left += 1
+        else:
+            right -= 1
+            
+    return None
+```
+
 
 ## DFS(Depth First Search, 깊이 우선 탐색)
 * 한놈만 팬다(?)라는 느낌
