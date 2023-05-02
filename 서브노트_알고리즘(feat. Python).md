@@ -80,15 +80,17 @@ print(dfs(graph_list, root_node))
 ```python
 from collections import deque
 
-def bfs(graph, start_node):
-    visited = list()
-    adjacency_nodes = deque([start_node])
+def bfs(graph, start):
+    visited = []  # 방문한 노드를 저장하는 리스트
+    queue = deque([start])  # 큐(Queue) 자료구조를 사용하여 탐색할 노드를 저장
 
-    while adjacency_nodes:
-        node = adjacency_nodes.popleft()
+    while queue:
+        node = queue.popleft()  # 큐에서 노드를 하나 꺼내옴
+
         if node not in visited:
-            visited.append(node)
-            adjacency_nodes.extend(graph[node])
+            visited.append(node)  # 방문한 노드를 visited 리스트에 추가
+            queue.extend(graph[node])  # 해당 노드의 인접 노드들을 큐에 추가
+
     return visited
 
 graph = {
@@ -166,7 +168,33 @@ def solution(n, edge):
                 
     distance.sort(reverse=True)    
     return distance.count(distance[0])
+```
 
+```python
+from collections import deque
+#0         0
+#1     -1     +1
+#2   -1  +1 -1  +1
+#3
+#4
+#5
+
+# BFS를 이용한 풀이
+def solution(numbers, target):
+    
+    leaves = [0]
+    for v in numbers:
+        tmp = []
+        for leave in leaves:
+            tmp.append(leave - v)
+            tmp.append(leave + v)
+        leaves = tmp
+    count = 0
+    for leaf in leaves:
+        if leaf == target:
+            count += 1
+
+    return count
 ```
 
 
@@ -214,36 +242,65 @@ recursive_function(1)
 ## Dynamic Programming(동적 계획법)
 * 큰 문제를 작은 문제로 나눌 수 있다.
 * 작은 문제에서 구한 정답은 그것을 포함하는 큰 문제에서도 동일하다.
-* Top-Down 방식 - 재귀함수를 사용해 구현하는 다이나믹 프로그래밍 방법 (메모제이션 기법을 활용)
-* Bottom-Up 방식 - 단순 반복문을 활용 (DP 테이블을 활용)
+* Top-Down 방식
+> 탑-다운 방식은 재귀 함수를 사용하여 큰 문제를 작은 부분 문제로 분해합니다. 문제를 자연스럽게 접근하는 데 도움이 되지만, 재귀 함수의 호출로 인한 오버헤드가 
+발생할 수 있습니다. 탑-다운 방식에서는 메모이제이션을 구현할 때, 해시 테이블이나 배열을 사용하여 각 부분 문제의 결과를 저장합니다.
 ```python
-import time
-
-d = [0] * 50
-
-def fibo(x):
-    if x == 1 or x == 2:
+def fibonacci_top_down(n, memo):
+    if n == 0:
+        return 0
+    if n == 1:
         return 1
-    if d[x] != 0:
-        return d[x]
-    d[x] = fibo(x-1) + fibo(x-2)
-    return d[x]
+    if n not in memo:
+        memo[n] = fibonacci_top_down(n-1, memo) + fibonacci_top_down(n-2, memo)
+    return memo[n]
 
-for num in range(5, 40, 10):
-    start = time.time()
-    res = fibo(num)
-    print(res, '-> 러닝타임:', round(time.time() - start, 2), '초')
+memo = {}
+n = 10
+print(fibonacci_top_down(n, memo))
+```
+* Bottom-Up 방식
+> 바텀-업 방식은 반복문을 사용하여 작은 부분 문제부터 차례대로 해결합니다. 작은 부분 문제의 해결책을 저장하고 이를 다음 부분 문제 해결에 사용함으로써, 
+> 전체 문제의 최적해를 찾습니다. 재귀 호출 오버헤드가 없기 때문에 일반적으로 탑-다운 방식보다 효율적입니다. 바텀-업 방식에서는 메모이제이션을 구현할 때, 
+> 일반적으로 1차원이나 2차원 배열을 사용하여 각 부분 문제의 결과를 저장합니다.
+```python
+def fibonacci_bottom_up(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    dp = [0] * (n+1)
+    dp[1] = 1
+    for i in range(2, n+1):
+        dp[i] = dp[i-1] + dp[i-2]
+    return dp[n]
 
-# --------------------------------------------
-d = [0] * 100
+n = 10
+print(fibonacci_bottom_up(n))
+```
+```python
+def solution(triangle):
+    n = len(triangle)
+    dp = [[0] * i for i in range(1, n+1)]  # 동적 계획법을 위한 2차원 배열 초기화
 
-d[1] = 1 # 첫 번째 항
-d[2] = 1 # 두 번째 항
-N = 99   # 피보나치 수열의 99번째 숫자는?
+    # 첫 번째 행은 원래 삼각형의 값을 그대로 사용
+    dp[0][0] = triangle[0][0]
 
-for i in range(3, N+1):
-    d[i] = d[i-1] + d[i-2]
+    # 삼각형의 두 번째 행부터 마지막 행까지 순회하며 최대 합 계산
+    for i in range(1, n):
+        for j in range(i+1):
+            # 왼쪽 끝 원소인 경우
+            if j == 0:
+                dp[i][j] = dp[i-1][j] + triangle[i][j]
+            # 오른쪽 끝 원소인 경우
+            elif j == i:
+                dp[i][j] = dp[i-1][j-1] + triangle[i][j]
+            # 그 외의 경우
+            else:
+                dp[i][j] = max(dp[i-1][j-1], dp[i-1][j]) + triangle[i][j]
 
-print(d[N])
+    # 마지막 행에서 최대값을 반환
+    return max(dp[-1])
+
 ```
 
